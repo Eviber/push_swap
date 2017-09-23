@@ -6,12 +6,41 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 16:51:26 by ygaude            #+#    #+#             */
-/*   Updated: 2017/09/21 22:12:52 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/09/24 01:31:14 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
 #include "libft.h"
+
+typedef struct		s_pile
+{
+	struct s_pile	*next;
+	struct s_pile	*last;
+	int				n;
+}					t_pile;
+
+void			add(t_pile **pile, int n)
+{
+	t_pile	*tmp;
+
+	if (!pile || !(tmp = (t_pile *)malloc(sizeof(t_pile))))
+		return ;
+	tmp->n = n;
+	if (!*pile)
+	{
+		*pile = tmp;
+		tmp->next = tmp;
+		tmp->last = tmp;
+	}
+	else
+	{
+		tmp->next = *pile;
+		tmp->last = (*pile)->last;
+		(*pile)->last->next = tmp;
+		(*pile)->last = tmp;
+	}
+}
 
 static int		check_n_atoi(char *str, int *n)
 {
@@ -33,9 +62,10 @@ static int		check_n_atoi(char *str, int *n)
 	return (1);
 }
 
-static int		split_atoi(char *str, int **p1, size_t *n)
+static int		split_atoi(char *str, t_pile **p1)
 {
-	size_t	j;
+	t_pile	*cur;
+	int		tmp;
 	int		i;
 	int		check;
 
@@ -45,14 +75,17 @@ static int		split_atoi(char *str, int **p1, size_t *n)
 	{
 		if (ft_isdigit(str[i]) || str[i] == '-' || str[i] == '+')
 		{
-			j = 0;
-			check = check && check_n_atoi(str + i, &((*p1)[*n]));
+			check = check && check_n_atoi(str + i, &tmp);
+			add(p1, tmp);
+			cur = *p1;
+			while (check && cur != (*p1)->last)
+			{
+				check = check && !(cur->n == (*p1)->last->n);
+				cur = cur->next;
+			}
 			i += (str[i] == '-' || str[i] == '+');
-			while (check && j < *n)
-				check = check && !((*p1)[j++] == (*p1)[*n]);
 			while (check && str[i] && ft_isdigit(str[i]))
 				i++;
-			(*n)++;
 		}
 		else
 			i++;
@@ -60,94 +93,173 @@ static int		split_atoi(char *str, int **p1, size_t *n)
 	return (check);
 }
 
-static int		checkarg(int argc, char **argv, int **p1, int **p2)
+static int		checkarg(int argc, char **argv, t_pile **p1)
 {
 	int		a;
-	int		n;
 	size_t	i;
 
-	n = 0;
 	a = 0;
-	if (!p1 || !p2)
-		return (0);
-	while (++a < argc && (i = -1))
+	while (++a < argc)
+	{
+		i = -1;
 		while (argv[a][++i])
 		{
-			n += ft_isdigit(argv[a][i]) && (!i || ft_isspace(argv[a][i - 1]) ||
-				argv[a][i - 1] == '-' || argv[a][i - 1] == '+');
 			if ((!ft_isdigit(argv[a][i]) && !ft_isspace(argv[a][i])) &&
 				!(ft_strchr("+-", argv[a][i]) && ft_isdigit(argv[a][i + 1]) &&
 				!ft_isdigit(argv[a][i - 1])))
 					return (-1);
 		}
-	*p1 = (int *)ft_memalloc(2 * (sizeof(int) * (n + 1)));
-	*p2 = *p1 + n + 1;
+	}
 	a = 0;
-	i = 0;
 	while (++a < argc)
-		if (!split_atoi(argv[a], p1, &i))
+		if (!split_atoi(argv[a], p1))
 			return (-1);
-	return(n);
+	return(*p1 != NULL);
 }
 
-static int		apply_s(char *str, int *p1, int *p2, int len)
+void			swap(t_pile *pile)
 {
-	if (*str = 'a' || *str 's')
-	if (*str = 'b' || *str 's')
+	int		tmp;
+
+	tmp = pile->n;
+	pile->n = pile->next->n;
+	pile->next->n = tmp;
 }
 
-static int		apply_p(char *str, int *p1, int *p2, int len)
+void			push(t_pile **from, t_pile **to)
 {
-	if (*str = 'a' || *str 's')
-	if (*str = 'b' || *str 's')
+	t_pile	*tmp;
+
+	if (*from)
+	{
+		tmp = *from;
+		tmp->last->next = tmp->next;
+		tmp->next->last = tmp->last;
+		*from = (tmp != tmp->next) ? tmp->next : NULL;
+		tmp->next = (*to) ? *to : tmp;
+		tmp->last = (*to) ? (*to)->last : tmp;
+		if (*to)
+		{
+			(*to)->last->next = tmp;
+			(*to)->last = tmp;
+		}
+		*to = tmp;
+	}
 }
 
-static int		apply_r(char *str, int *p1, int *p2, int len)
+void			rotate(t_pile **pile, int reverse)
 {
-	if (*str = 'a' || *str 's')
-	if (*str = 'b' || *str 's')
+	if (reverse)
+		*pile = (*pile)->last;
+	else
+		*pile = (*pile)->next;
 }
 
-static int		checkinstruct(int *p1, int *p2, int len)
+static int		apply_s(char *str, t_pile **p1, t_pile **p2)
 {
+	if ((*str == 'a' || *str == 's') && *p1)
+		swap(*p1);
+	if ((*str == 'b' || *str == 's') && *p2)
+		swap(*p2);
+	return ((*str == 'a' || *str == 'b' || *str == 's') && str[1] == '\0');
+}
+
+static int		apply_p(char *str, t_pile **p1, t_pile **p2)
+{
+	if (*str == 'a')
+		push(p2, p1);
+	else if (*str == 'b')
+		push(p1, p2);
+	return ((*str == 'a' || *str == 'b') && str[1] == '\0');
+}
+
+static int		apply_r(char *str, t_pile **p1, t_pile **p2)
+{
+	int		reverse;
+
+	reverse = (str[0] == 'r' && str[1]);
+	str += reverse;
+	if ((*str == 'a' || *str == 'r') && *p1)
+		rotate(p1, reverse);
+	if ((*str == 'b' || *str == 'r') && *p2)
+		rotate(p2, reverse);
+	return ((*str == 'a' || *str == 'b' || *str == 'r') && str[1] == '\0');
+}
+
+#           include <stdio.h>
+void			putpiles(t_pile *p1, t_pile *p2)
+{
+	t_pile	*cur;
+	int		len1;
+	int		len2;
+
+	len1 = (p1  != NULL);
+	cur = p1;
+	while (cur && cur->next != p1 && len1++)
+		cur = cur->next;
+	len2 = (p2  != NULL);
+	cur = p2;
+	while (cur && cur->next != p2 && len2++)
+		cur = cur->next;
+	while (len1 || len2)
+	{
+		if (len1 > len2)
+			printf("\t\t%-11d|\n", p1->n);
+		else if (len1 < len2)
+			printf("\t\t%-11.0d|%11d\n", 0, p2->n);
+		else
+			printf("\t\t%-11d|%11d\n", p1->n, p2->n);
+		if (len1 >= len2)
+			p1 = p1->next;
+		if (len2 >= len1)
+			p2 = p2->next;
+		len1 -= (len1 >= len2);
+		len2 -= (len2 > len1);
+	}
+	printf("\t\t-----------------------\n\t\ta%10.0d %10.0db\n\n\n", 0, 0);
+}
+
+static int		checkinstruct(t_pile **p1)
+{
+	t_pile	*p2;
 	int		i;
 	int		check;
 	char	*str;
 
+	p2 = NULL;
 	check = 1;
-	while (check && get_next_line(1, &str) > 0)
+	putpiles(*p1, p2);
+	while (check && get_next_line(0, &str) > 0)
 	{
 		i = 0;
 		while (ft_isspace(str[i]))
 			i++;
 		if (str[i] == 's')
-			check = apply_s(str + i + 1, p1, p2, len);
+			check = apply_s(str + i + 1, p1, &p2);
 		else if (str[i] == 'p')
-			check = apply_p(str + i + 1, p1, p2, len);
+			check = apply_p(str + i + 1, p1, &p2);
 		else if (str[i] == 'r')
-			check = apply_r(str + i + 1, p1, p2, len);
+			check = apply_r(str + i + 1, p1, &p2);
 		else
 			check = 0;
+		free(str);
+		putpiles(*p1, p2);
 	}
-	return (1);
+	return ((!check) ? -1 : p2 == NULL);
 }
 
 int				main(int argc, char **argv)
 {
-	int		*p1;
-	int		*p2;
-	int		n;
+	t_pile	*p1;
+	int		ret;
 
-	if (argc <= 1 || (n = checkarg(argc, argv, &p1, &p2)) == -1 ||
-		!checkinstruct(p1, p2, n))
+	p1 = NULL;
+	if (argc <= 1 || checkarg(argc, argv, &p1) < 1 ||
+		(ret = checkinstruct(&p1)) == -1)
 		ft_putstr("Error\n");
+	else if (ret)
+		ft_putstr("OK\n");
 	else
-	{
-		while (n)
-		{
-			ft_putnbr(p1[--n]);
-			ft_putchar(' ');
-		}
-	}
+		ft_putstr("KO\n");
 	return (0);
 }
