@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 16:51:26 by ygaude            #+#    #+#             */
-/*   Updated: 2017/09/24 01:31:14 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/09/24 14:40:57 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int		split_atoi(char *str, t_pile **p1)
 	check = 1;
 	while (check && str[i])
 	{
-		if (ft_isdigit(str[i]) || str[i] == '-' || str[i] == '+')
+		if (ft_strchr("0123456789-+", str[i]) && str[i + 1] != 'v')
 		{
 			check = check && check_n_atoi(str + i, &tmp);
 			add(p1, tmp);
@@ -93,27 +93,26 @@ static int		split_atoi(char *str, t_pile **p1)
 	return (check);
 }
 
-static int		checkarg(int argc, char **argv, t_pile **p1)
+static int		checkarg(char *str, t_pile **p1, int *verbose)
 {
-	int		a;
 	size_t	i;
 
-	a = 0;
-	while (++a < argc)
+	*verbose = -1;
+	i = 0;
+	while (ft_isspace(str[i]))
+		i++;
+	*verbose = (str[i] == '-' && str[i + 1] == 'v' && !ft_isdigit(str[i + 2]));
+	i += *verbose * 2;
+	while (str[i])
 	{
-		i = -1;
-		while (argv[a][++i])
-		{
-			if ((!ft_isdigit(argv[a][i]) && !ft_isspace(argv[a][i])) &&
-				!(ft_strchr("+-", argv[a][i]) && ft_isdigit(argv[a][i + 1]) &&
-				!ft_isdigit(argv[a][i - 1])))
-					return (-1);
-		}
+		if (*verbose != -1 && (!ft_isdigit(str[i]) &&
+			!ft_isspace(str[i])) && !(ft_strchr("+-", str[i]) &&
+			ft_isdigit(str[i + 1]) && !ft_isdigit(str[i - 1])))
+				return (-1);
+		i++;
 	}
-	a = 0;
-	while (++a < argc)
-		if (!split_atoi(argv[a], p1))
-			return (-1);
+	if (!split_atoi(str, p1))
+		return (-1);
 	return(*p1 != NULL);
 }
 
@@ -219,7 +218,23 @@ void			putpiles(t_pile *p1, t_pile *p2)
 	printf("\t\t-----------------------\n\t\ta%10.0d %10.0db\n\n\n", 0, 0);
 }
 
-static int		checkinstruct(t_pile **p1)
+int				issorted(t_pile *pile)
+{
+	t_pile	*cur;
+	int		sorted;
+
+	cur = pile;
+	sorted = 1;
+	while (sorted && cur->next != pile)
+	{
+		if (cur->n >= cur->next->n)
+			sorted = 0;
+		cur = cur->next;
+	}
+	return (sorted);
+}
+
+static int		checkinstruct(t_pile **p1, int verbose)
 {
 	t_pile	*p2;
 	int		i;
@@ -228,7 +243,8 @@ static int		checkinstruct(t_pile **p1)
 
 	p2 = NULL;
 	check = 1;
-	putpiles(*p1, p2);
+	if (verbose)
+		putpiles(*p1, p2);
 	while (check && get_next_line(0, &str) > 0)
 	{
 		i = 0;
@@ -243,19 +259,23 @@ static int		checkinstruct(t_pile **p1)
 		else
 			check = 0;
 		free(str);
-		putpiles(*p1, p2);
+		if (verbose)
+			putpiles(*p1, p2);
 	}
-	return ((!check) ? -1 : p2 == NULL);
+	return ((!check) ? -1 : (p2 == NULL && issorted(*p1)));
 }
 
 int				main(int argc, char **argv)
 {
 	t_pile	*p1;
+	char	*str;
 	int		ret;
+	int		verbose;
 
 	p1 = NULL;
-	if (argc <= 1 || checkarg(argc, argv, &p1) < 1 ||
-		(ret = checkinstruct(&p1)) == -1)
+	str = ft_strmerge(argv + 1, 1, argc - 1);
+	if (argc <= 1 || checkarg(str, &p1, &verbose) < 1 ||
+		(ret = checkinstruct(&p1, verbose)) == -1)
 		ft_putstr("Error\n");
 	else if (ret)
 		ft_putstr("OK\n");
