@@ -6,7 +6,7 @@
 #    By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/20 18:17:31 by ygaude            #+#    #+#              #
-#    Updated: 2017/09/20 23:31:29 by ygaude           ###   ########.fr        #
+#    Updated: 2017/09/24 20:06:23 by ygaude           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRC_DIR = checker_src/
 LIBFT_DIR = libft/
 OBJ_DIR = obj/
 
-SRC = checker.c
+SRC =	apply.c checker.c parser.c
 
 OBJ = ${SRC:c=o}
 
@@ -30,7 +30,8 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	@make -C libft/
 	@echo "Making checker..."
-	@$(CC) $(CFLAGS) $(OBJ_DIR)$(OBJ) $(LIBFT_DIR)libft.a -I libft/ -I include/ -o $(NAME)
+	@$(CC) $(CFLAGS) $(addprefix $(OBJ_DIR), $(OBJ)) $(LIBFT_DIR)libft.a       \
+		-I libft/ -I include/ -o $(NAME)
 	@echo "Done !"
 
 clean:
