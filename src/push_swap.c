@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 13:11:47 by ygaude            #+#    #+#             */
-/*   Updated: 2017/09/27 11:33:05 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/09/27 14:54:39 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,12 @@ int		median(t_pile *pile, int size)
 		cur = cur->next;
 	}
 	return (cur->n);
+}
+
+void			doinstruct(char *instruct, t_pile **p1, t_pile **p2)
+{
+	ft_putendl(instruct);
+	apply(instruct, p1, p2);
 }
 
 void			quicksort(t_pile **src, t_pile **dst, int until)
