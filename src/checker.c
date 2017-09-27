@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 16:51:26 by ygaude            #+#    #+#             */
-/*   Updated: 2017/09/26 21:10:29 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/09/27 15:15:12 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "push_swap.h"
 
 #           include <stdio.h>
+#           include <stdlib.h>
 static void		putpiles(t_pile *p1, t_pile *p2)
 {
 	t_pile	*cur;
@@ -29,16 +30,17 @@ static void		putpiles(t_pile *p1, t_pile *p2)
 	cur = p2;
 	while (cur && cur->next != p2 && len2++)
 		cur = cur->next;
+//	system("clear");
 	while (len1 || len2)
 	{
-		printf("\t\t%-11.*d|%11.*d\n", (len1 >= len2), p1->n * (len1 >= len2),
-				(len1 <= len2), p2->n * (len1 <= len2));
+		printf("\n%-11.*d|%11.*d", (len1 >= len2), (len1 >= len2) ? p1->n : 0,
+				(len1 <= len2), (len1 <= len2) ? p2->n : 0);
 		p1 = (len1 >= len2) ? p1->next : p1;
 		p2 = (len2 >= len1) ? p2->next : p2;
 		len1 -= (len1 >= len2);
 		len2 -= (len2 > len1);
 	}
-	printf("\t\t-----------------------\n\t\ta%10.0d %10.0db\n\n\n", 0, 0);
+	printf("\n-----------------------\na%10.0d %10.0db\n\n\n", 0, 0);
 }
 
 static int		issorted(t_pile *pile)

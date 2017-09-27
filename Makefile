@@ -6,14 +6,14 @@
 #    By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/20 18:17:31 by ygaude            #+#    #+#              #
-#    Updated: 2017/09/24 20:06:23 by ygaude           ###   ########.fr        #
+#    Updated: 2017/09/27 14:54:12 by ygaude           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = checker
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-SRC_DIR = checker_src/
+SRC_DIR = src/
 LIBFT_DIR = libft/
 OBJ_DIR = obj/
 
