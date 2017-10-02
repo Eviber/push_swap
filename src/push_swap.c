@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 13:11:47 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/02 09:01:49 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/02 15:24:48 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void			doinstruct(char *instruct, t_pile **p1, t_pile **p2)
 	apply(instruct, p1, p2);
 }
 
-#include <stdio.h>
 static int		issorted(t_pile *pile, int until, int apile)
 {
 	t_pile	*cur;
@@ -114,7 +113,9 @@ void			quicksort(t_pile **p1, t_pile **p2, int until, int apile)
 	i = 0;
 	reset = 0;
 	pivot = median((apile) ? *p1 : *p2, until);
-	while (until > 3 && i < (until / 2))
+	if (issorted((apile) ? *p1 : *p2, until, apile))
+		return ;
+	while (until > 3 && i < (until / 2) + (until % 2 && !apile))
 	{
 		if ((apile && (*p1)->n < pivot) || (!apile && (*p2)->n >= pivot))
 		{
@@ -136,6 +137,13 @@ void			quicksort(t_pile **p1, t_pile **p2, int until, int apile)
 	while (i--)
 		doinstruct((apile) ? "pa" : "pb", p1, p2);
 }
+
+/*
+** To do:
+** Handle almost sorted list
+** optimise quicksort firsts iteration
+** add an "instruction pile" to make even more optimisations
+*/
 
 static void		makeinstruct(t_pile **p1)
 {
