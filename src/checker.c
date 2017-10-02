@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 16:51:26 by ygaude            #+#    #+#             */
-/*   Updated: 2017/09/27 15:15:12 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/02 08:39:57 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,13 @@ static int		issorted(t_pile *pile)
 
 static int		checkinstruct(t_pile **p1, int verbose)
 {
-	t_pile	*p2;
-	int		i;
-	int		check;
-	char	*str;
+	t_pile			*p2;
+	int				i;
+	unsigned int	count;
+	int				check;
+	char			*str;
 
+	count = 0;
 	p2 = NULL;
 	check = 1;
 	if (verbose)
@@ -76,10 +78,16 @@ static int		checkinstruct(t_pile **p1, int verbose)
 		while (ft_isspace(str[i]))
 			i++;
 		apply(str + i, p1, &p2);
-		free(str);
 		if (verbose)
+		{
+			printf("%s\n", str);
 			putpiles(*p1, p2);
+		}
+		free(str);
+		count++;
 	}
+	if (verbose)
+		printf("%u instructions\n", count);
 	return ((!check) ? -1 : (p2 == NULL && issorted(*p1)));
 }
 
