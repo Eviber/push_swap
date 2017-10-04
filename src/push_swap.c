@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 13:11:47 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/03 20:55:20 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/04 19:28:49 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ static int		ksorted(t_pile *pile, int apile)
 	t_pile	*cur;
 	int		i;
 
-	i = 0;
+	i = 1;
 	cur = pile;
-	while (cur->next != pile && ((apile && cur->n > cur->next->n) ||
-								(!apile && cur->n < cur->next->n)))
+	while (cur->next != pile && ((apile && cur->n < cur->next->n) ||
+								(!apile && cur->n > cur->next->n)))
 	{
 		i++;
 		cur = cur->next;
@@ -78,7 +78,7 @@ static int		ksorted(t_pile *pile, int apile)
 
 static int		issorted(t_pile *pile, int until, int apile)
 {
-	return (ksorted(pile, apile) == until);
+	return (ksorted(pile, apile) >= until);
 }
 
 void			sort3(t_pile **p1, t_pile **p2, int until, int apile)
@@ -135,12 +135,15 @@ void			quicksort(t_pile **p1, t_pile **p2, int until, int flag)
 	while (!(flag & 0b10) && (reset--) - i)
 		doinstruct((apile) ? "rra" : "rrb", p1, p2);
 	if (until - i <= 3)
+	{
 		sort3(p1, p2, until - i, apile);
+
+	}
 	else
 		quicksort(p1, p2, until - i, apile);
 	if (i)
 		quicksort(p1, p2, i, !apile | ((flag == 0b11) * 2));
-	while (i--)
+	while (apile && i--)
 		doinstruct(apile ? "pa" : "pb", p1, p2);
 }
 
