@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 13:11:47 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/09 17:37:39 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/19 14:49:46 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,6 @@ void			sort3(t_pile **p1, t_pile **p2, int until, int apile)
 
 void			quicksortb(t_pile **p1, t_pile **p2, int until, int firstiter);
 
-int		depth;
-#include <stdio.h>
 void			quicksorta(t_pile **p1, t_pile **p2, int until, int firstiter)
 {
 	int		i;
@@ -123,7 +121,6 @@ void			quicksorta(t_pile **p1, t_pile **p2, int until, int firstiter)
 	pivot = median(*p1, until);
 	if (issorted(*p1, until, 1))
 		;//return ;
-printf(" - - - a depth = %d - - -\n", ++depth);
 	while (until > 3 && i < (until / 2))
 	{
 		if ((*p1)->n < pivot)
@@ -145,7 +142,6 @@ printf(" - - - a depth = %d - - -\n", ++depth);
 		quicksorta(p1, p2, until - i, firstiter);
 	if (i)
 		quicksortb(p1, p2, i, firstiter);
-printf(" - - - a depth OUT = %d - - -\n", depth--);
 }
 
 void			quicksortb(t_pile **p1, t_pile **p2, int until, int firstiter)
@@ -159,7 +155,6 @@ void			quicksortb(t_pile **p1, t_pile **p2, int until, int firstiter)
 	pivot = median(*p2, until);
 	if (!*p2)
 		;//return ;
-printf(" - - - b depth = %d - - -\n", ++depth);
 	while (until > 3 && i < (until / 2) + (until % 2))
 	{
 		if ((*p2)->n >= pivot)
@@ -181,7 +176,6 @@ printf(" - - - b depth = %d - - -\n", ++depth);
 		sort3(p1, p2, until - i, 0);
 	else
 		quicksortb(p1, p2, until - i, firstiter);
-printf(" - - - b depth OUT = %d - - -\n", depth--);
 }
 
 void			quicksort(t_pile **p1, t_pile **p2, int until, int flag)
@@ -236,8 +230,7 @@ static void		makeinstruct(t_pile **p1)
 	p2 = NULL;
 	cur = *p1;
 	k = ksorted(*p1, 1);
-	depth = 0;
-	quicksorta(p1, &p2, countitem(*p1), 1);
+	quicksort(p1, &p2, countitem(*p1), 1);
 }
 
 int				main(int argc, char **argv)
