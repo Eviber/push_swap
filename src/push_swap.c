@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 13:11:47 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/19 14:49:46 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/21 18:03:17 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,85 +108,13 @@ void			sort3(t_pile **p1, t_pile **p2, int until, int apile)
 		doinstruct((apile) ? "sa" : "sb", p1, p2);
 }
 
-void			quicksortb(t_pile **p1, t_pile **p2, int until, int firstiter);
-
-void			quicksorta(t_pile **p1, t_pile **p2, int until, int firstiter)
+void			quicksort(t_pile **p1, t_pile **p2, int until, int apile, int fiter)
 {
 	int		i;
 	int		reset;
 	int		pivot;
 
 	i = 0;
-	reset = 0;
-	pivot = median(*p1, until);
-	if (issorted(*p1, until, 1))
-		;//return ;
-	while (until > 3 && i < (until / 2))
-	{
-		if ((*p1)->n < pivot)
-		{
-			doinstruct("pb", p1, p2);
-			i++;
-		}
-		else
-		{
-			doinstruct("ra", p1, p2);
-			reset++;
-		}
-	}
-	while (!firstiter && reset--)
-		doinstruct("rra", p1, p2);
-	if (until - i <= 3)
-		sort3(p1, p2, until - i, 1);
-	else
-		quicksorta(p1, p2, until - i, firstiter);
-	if (i)
-		quicksortb(p1, p2, i, firstiter);
-}
-
-void			quicksortb(t_pile **p1, t_pile **p2, int until, int firstiter)
-{
-	int		i;
-	int		reset;
-	int		pivot;
-
-	i = 0;
-	reset = 0;
-	pivot = median(*p2, until);
-	if (!*p2)
-		;//return ;
-	while (until > 3 && i < (until / 2) + (until % 2))
-	{
-		if ((*p2)->n >= pivot)
-		{
-			doinstruct("pa", p1, p2);
-			i++;
-		}
-		else
-		{
-			doinstruct("rb", p1, p2);
-			reset++;
-		}
-	}
-	while (!firstiter && reset--)
-		doinstruct("rrb", p1, p2);
-	if (i)
-		quicksorta(p1, p2, i, 0);
-	if (until - i <= 3)
-		sort3(p1, p2, until - i, 0);
-	else
-		quicksortb(p1, p2, until - i, firstiter);
-}
-
-void			quicksort(t_pile **p1, t_pile **p2, int until, int flag)
-{
-	int		i;
-	int		apile;
-	int		reset;
-	int		pivot;
-
-	i = 0;
-	apile = flag & 1;
 	reset = 0;
 	pivot = median((apile) ? *p1 : *p2, until);
 	if (issorted((apile) ? *p1 : *p2, until, apile))
@@ -202,14 +130,14 @@ void			quicksort(t_pile **p1, t_pile **p2, int until, int flag)
 			doinstruct((apile) ? "ra" : "rb" , p1, p2);
 		reset++;
 	}
-	while (!(flag & 0b10) && (reset--) - i)
+	while (fiter && (reset--) - i)
 		doinstruct((apile) ? "rra" : "rrb", p1, p2);
 	if (until - i <= 3)
 		sort3(p1, p2, until - i, apile);
 	else
-		quicksort(p1, p2, until - i, apile);
+		quicksort(p1, p2, until - i, apile, 0);
 	if (i)
-		quicksort(p1, p2, i, !apile | ((flag == 0b11) * 2));
+		quicksort(p1, p2, i, !apile, apile && fiter);
 	while (i--)
 		doinstruct(apile ? "pa" : "pb", p1, p2);
 }
@@ -230,7 +158,7 @@ static void		makeinstruct(t_pile **p1)
 	p2 = NULL;
 	cur = *p1;
 	k = ksorted(*p1, 1);
-	quicksort(p1, &p2, countitem(*p1), 1);
+	quicksort(p1, &p2, countitem(*p1), 1, 1);
 }
 
 int				main(int argc, char **argv)
