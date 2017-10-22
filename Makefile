@@ -6,7 +6,7 @@
 #    By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/20 18:17:31 by ygaude            #+#    #+#              #
-#    Updated: 2017/10/02 01:40:06 by ygaude           ###   ########.fr        #
+#    Updated: 2017/10/22 20:37:13 by ygaude           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,14 +33,14 @@ all: $(CHECKER) $(PUSH_SWAP)
 $(CHECKER): $(CHECKER_OBJ)
 	@make -C libft/
 	@echo "Making checker..."
-	@$(CC) $(CFLAGS) $(addprefix $(OBJ_DIR), $(CHECKER_OBJ)) $(LIBFT_DIR)libft.a       \
-		-I libft/ -I include/ -o $(CHECKER)
+	@$(CC) $(CFLAGS) $(addprefix $(OBJ_DIR), $(CHECKER_OBJ))                   \
+					 $(LIBFT_DIR)libft.a -I libft/ -I include/ -o $(CHECKER)
 	@echo "Done !"
 
 $(PUSH_SWAP): $(PS_OBJ)
 	@make -C libft/
 	@echo "Making push_swap..."
-	@$(CC) $(CFLAGS) $(addprefix $(OBJ_DIR), $(PS_OBJ)) $(LIBFT_DIR)libft.a       \
+	@$(CC) $(CFLAGS) $(addprefix $(OBJ_DIR), $(PS_OBJ)) $(LIBFT_DIR)libft.a    \
 		-I libft/ -I include/ -o $(PUSH_SWAP)
 	@echo "Done !"
 

@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 13:11:47 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/21 18:03:17 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/22 19:46:11 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,18 @@ void			sort3(t_pile **p1, t_pile **p2, int until, int apile)
 		doinstruct((apile) ? "sa" : "sb", p1, p2);
 }
 
+int				act(t_pile **p1, t_pile **p2, int apile, int pivot)
+{
+	if ((apile && (*p1)->n < pivot) || (!apile && (*p2)->n >= pivot))
+	{
+		doinstruct((apile) ? "pb" : "pa", p1, p2);
+		return (1);
+	}
+	else
+		doinstruct((apile) ? "ra" : "rb" , p1, p2);
+	return (0);
+}
+
 void			quicksort(t_pile **p1, t_pile **p2, int until, int apile, int fiter)
 {
 	int		i;
@@ -121,16 +133,10 @@ void			quicksort(t_pile **p1, t_pile **p2, int until, int apile, int fiter)
 		return ;
 	while (until > 3 && i < (until / 2) + (until % 2 && !apile))
 	{
-		if ((apile && (*p1)->n < pivot) || (!apile && (*p2)->n >= pivot))
-		{
-			doinstruct((apile) ? "pb" : "pa", p1, p2);
-			i++;
-		}
-		else
-			doinstruct((apile) ? "ra" : "rb" , p1, p2);
+		i += act(p1, p2, apile, pivot);
 		reset++;
 	}
-	while (fiter && (reset--) - i)
+	while (!fiter && (reset--) - i)
 		doinstruct((apile) ? "rra" : "rrb", p1, p2);
 	if (until - i <= 3)
 		sort3(p1, p2, until - i, apile);
