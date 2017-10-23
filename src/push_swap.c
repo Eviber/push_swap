@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 13:11:47 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/22 19:46:11 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/23 20:38:12 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,6 @@ int		median(t_pile *pile, int size)
 	return (cur->last->n);
 }
 
-void			doinstruct(char *instruct, t_pile **p1, t_pile **p2)
-{
-	ft_putendl(instruct);
-	apply(instruct, p1, p2);
-}
-
 static int		ksorted(t_pile *pile, int apile)
 {
 	t_pile	*cur;
@@ -96,27 +90,27 @@ void			sort3(t_pile **p1, t_pile **p2, int until, int apile)
 		c = (apile) ? (*p1)->next->next->n : (*p2)->n;
 		if ((apile && a < b && b > c) || (!apile && a > b && b < c))
 		{
-			doinstruct((apile) ? "ra" : "rb", p1, p2);
-			doinstruct((apile) ? "sa" : "sb", p1, p2);
-			doinstruct((apile) ? "rra" : "rrb", p1, p2);
+			doinstruct((apile) ? RA : RB, p1, p2);
+			doinstruct((apile) ? SA : SB, p1, p2);
+			doinstruct((apile) ? RRA : RRB, p1, p2);
 		}
 		else
-			doinstruct((apile) ? "sa" : "sb", p1, p2);
+			doinstruct((apile) ? SA : SB, p1, p2);
 		sort3(p1, p2, until, apile);
 	}
 	else if (until == 2 && a > b)
-		doinstruct((apile) ? "sa" : "sb", p1, p2);
+		doinstruct((apile) ? SA : SB, p1, p2);
 }
 
 int				act(t_pile **p1, t_pile **p2, int apile, int pivot)
 {
 	if ((apile && (*p1)->n < pivot) || (!apile && (*p2)->n >= pivot))
 	{
-		doinstruct((apile) ? "pb" : "pa", p1, p2);
+		doinstruct((apile) ? PB : PA, p1, p2);
 		return (1);
 	}
 	else
-		doinstruct((apile) ? "ra" : "rb" , p1, p2);
+		doinstruct((apile) ? RA : RB , p1, p2);
 	return (0);
 }
 
@@ -137,7 +131,7 @@ void			quicksort(t_pile **p1, t_pile **p2, int until, int apile, int fiter)
 		reset++;
 	}
 	while (!fiter && (reset--) - i)
-		doinstruct((apile) ? "rra" : "rrb", p1, p2);
+		doinstruct((apile) ? RRA : RRB, p1, p2);
 	if (until - i <= 3)
 		sort3(p1, p2, until - i, apile);
 	else
@@ -145,7 +139,7 @@ void			quicksort(t_pile **p1, t_pile **p2, int until, int apile, int fiter)
 	if (i)
 		quicksort(p1, p2, i, !apile, apile && fiter);
 	while (i--)
-		doinstruct(apile ? "pa" : "pb", p1, p2);
+		doinstruct(apile ? PA : PB, p1, p2);
 }
 
 /*
@@ -165,6 +159,8 @@ static void		makeinstruct(t_pile **p1)
 	cur = *p1;
 	k = ksorted(*p1, 1);
 	quicksort(p1, &p2, countitem(*p1), 1, 1);
+	cleaninstruct();
+	printinstruct();
 }
 
 int				main(int argc, char **argv)
