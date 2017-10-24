@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/23 16:24:12 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/23 20:43:45 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/24 21:08:34 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,18 @@ void				addorder(t_todo **todo, char order)
 				cur = cur->next;
 			cur->next = new;
 		}
+	}
+}
+
+void				delnext(t_todo *ptr)
+{
+	t_todo	*tmp;
+
+	if (ptr && ptr->next)
+	{
+		tmp = ptr->next->next;
+		free(ptr->next);
+		ptr->next = tmp;
 	}
 }
 
@@ -78,11 +90,98 @@ void				doinstruct(char instruct, t_pile **p1, t_pile **p2)
 	apply(strinstruct(instruct), p1, p2);
 }
 
+static int			isblocking(char order1, char order2)
+{
+	char	tmp;
+
+	if (order1 > order2)
+	{
+		tmp = order1;
+		order1 = order2;
+		order2 = tmp;
+	}
+	if (order1 <= PB && (order2 > PB || order2 == order1))
+		return (1);
+	else if (order1 == SA && (order2 == RA || order2 == RRA))
+		return (1);
+	else if (order1 == SB && (order2 == RB || order2 == RRB))
+		return (1);
+	return (0);
+}
+
+static int			isopposed(char order1, char order2)
+{
+	char	tmp;
+
+	if (order1 > order2)
+	{
+		tmp = order1;
+		order1 = order2;
+		order2 = tmp;
+	}
+	if (order1 <= PB && order2 <= PB)
+		return (order1 != order2);
+	else if (order1 <= SB && order2 == order1)
+		return (1);
+	else if ((order1 == RA && order2 == RRA) || (order1 == RB && order2 == RRB))
+		return (1);
+	return (0);
+}
+
+static int			tobedel(t_todo *list)
+{
+	char	order;
+
+	if (!list || !list->next)
+		return (0);
+	order = list->order;
+	while (list->next && !isblocking(order, list->next->order))
+	{
+		if (isopposed(order, list->next->order))
+		{
+			delnext(list);
+			return (1);
+		}
+		list = list->next;
+	}
+	return (0);
+}
+
+static int			del(t_todo **list)
+{
+	t_todo	*cur;
+	int		ret;
+
+	ret = 0;
+	if (!list)
+		return (ret);
+	cur = *list;
+	while (tobedel(*list))
+	{
+		ret = 1;
+		cur = (*list)->next;
+		free(*list);
+		*list = cur;
+	}
+	while (cur && cur->next)
+	{
+		if (tobedel(cur->next))
+		{
+			ret = 1;
+			delnext(cur);
+		}
+		cur = cur->next;
+	}
+	return (ret);
+}
+
 void				cleaninstruct(void)
 {
 	t_todo	**list;
 
 	list = getlist();
+	while (del(list))
+		;
 }
 
 void				printinstruct(void)
