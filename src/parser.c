@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/24 17:15:22 by ygaude            #+#    #+#             */
-/*   Updated: 2017/09/24 18:34:24 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/25 21:15:11 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,13 @@ static int		check_n_atoi(char *str, int *n)
 	return (1);
 }
 
-static int		split_atoi(char *str, t_pile **p1)
+static int		split_atoi(char *str, t_pile **p1, int check)
 {
 	t_pile	*cur;
 	int		tmp;
 	int		i;
-	int		check;
 
 	i = 0;
-	check = 1;
 	while (check && str[i])
 	{
 		if (ft_strchr("0123456789-+", str[i]) && str[i + 1] != 'v')
@@ -105,7 +103,7 @@ int				parse(char *str, t_pile **p1, int *verbose)
 			return (-1);
 		i++;
 	}
-	if (!split_atoi(str, p1))
+	if (!split_atoi(str, p1, 1))
 		return (-1);
-	return(*p1 != NULL);
+	return (*p1 != NULL);
 }

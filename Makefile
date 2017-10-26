@@ -6,7 +6,7 @@
 #    By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/20 18:17:31 by ygaude            #+#    #+#              #
-#    Updated: 2017/10/23 19:34:42 by ygaude           ###   ########.fr        #
+#    Updated: 2017/10/26 05:55:13 by ygaude           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ LIBFT_DIR = libft/
 OBJ_DIR = obj/
 
 CHECKER_SRC =	apply.c checker.c parser.c
-PS_SRC =	apply.c parser.c push_swap.c list.c
+PS_SRC =	apply.c parser.c push_swap.c list.c quicksort.c smallsort.c tools.c
 
 CHECKER_OBJ = ${CHECKER_SRC:c=o}
 PS_OBJ = ${PS_SRC:c=o}

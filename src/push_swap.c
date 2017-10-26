@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 13:11:47 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/24 18:46:16 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/26 06:01:38 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,35 +26,7 @@ int				countitem(t_pile *pile)
 	return (res);
 }
 
-int		median(t_pile *pile, int size)
-{
-	int		bigger;
-	int		lower;
-	int		i;
-	t_pile	*cur;
-	t_pile	*tmp;
-
-	cur = pile;
-	bigger = 0;
-	lower = 10;
-	while (bigger - lower != 0 && bigger - lower != -1)
-	{
-		bigger = 0;
-		lower = 0;
-		i = -1;
-		tmp = pile;
-		while (++i < size)
-		{
-			bigger += (cur->n < tmp->n);
-			lower += (cur->n > tmp->n);
-			tmp = tmp->next;
-		}
-		cur = cur->next;
-	}
-	return (cur->last->n);
-}
-
-static int		ksorted(t_pile *pile, int apile)
+int				ksorted(t_pile *pile, int apile)
 {
 	t_pile	*cur;
 	int		i;
@@ -75,92 +47,28 @@ static int		issorted(t_pile *pile, int until, int apile)
 	return (ksorted(pile, apile) >= until);
 }
 
-void			sort3(t_pile **p1, t_pile **p2, int until, int apile)
-{
-	int		a;
-	int		b;
-	int		c;
-
-	a = (apile) ? (*p1)->n : (*p2)->next->n;
-	b = (apile) ? (*p1)->next->n : (*p2)->n;
-	if (until == 3 && !issorted((apile) ? *p1 : *p2, 3, apile))
-	{
-		a = (apile) ? (*p1)->n : (*p2)->next->next->n;
-		b = (apile) ? (*p1)->next->n : (*p2)->next->n;
-		c = (apile) ? (*p1)->next->next->n : (*p2)->n;
-		if ((apile && a < b && b > c) || (!apile && a > b && b < c))
-		{
-			doinstruct((apile) ? RA : RB, p1, p2);
-			doinstruct((apile) ? SA : SB, p1, p2);
-			doinstruct((apile) ? RRA : RRB, p1, p2);
-		}
-		else
-			doinstruct((apile) ? SA : SB, p1, p2);
-		sort3(p1, p2, until, apile);
-	}
-	else if (until == 2 && a > b)
-		doinstruct((apile) ? SA : SB, p1, p2);
-}
-
-int				act(t_pile **p1, t_pile **p2, int apile, int pivot)
-{
-	if ((apile && (*p1)->n < pivot) || (!apile && (*p2)->n >= pivot))
-	{
-		doinstruct((apile) ? PB : PA, p1, p2);
-		return (1);
-	}
-	else
-		doinstruct((apile) ? RA : RB , p1, p2);
-	return (0);
-}
-
-void			quicksort(t_pile **p1, t_pile **p2, int until, int apile, int fiter)
-{
-	int		i;
-	int		reset;
-	int		pivot;
-
-	i = 0;
-	reset = 0;
-	pivot = median((apile) ? *p1 : *p2, until);
-	if (issorted((apile) ? *p1 : *p2, until, apile))
-		return ;
-	while (until > 3 && i < (until / 2) + (until % 2 && !apile))
-	{
-		i += act(p1, p2, apile, pivot);
-		reset++;
-	}
-	while ((!fiter || !apile) && (reset--) - i)
-		doinstruct((apile) ? RRA : RRB, p1, p2);
-	if (until - i <= 3)
-		sort3(p1, p2, until - i, apile);
-	else
-		quicksort(p1, p2, until - i, apile, fiter);
-	if (i)
-		quicksort(p1, p2, i, !apile, apile && fiter);
-	while (i--)
-		doinstruct(apile ? PA : PB, p1, p2);
-}
-
-/*
-** To do:
-** Handle almost sorted list
-** optimise quicksort firsts iteration
-** add an "instruction pile" to make even more optimisations
-*/
-
 static void		makeinstruct(t_pile **p1)
 {
-	int		k;
+	t_piles	p;
 	t_pile	*p2;
-	t_pile	*cur;
+	t_todo	**list;
+	int		size;
 
 	p2 = NULL;
-	cur = *p1;
-	k = ksorted(*p1, 1);
-	quicksort(p1, &p2, countitem(*p1), 1, 1);
-	cleaninstruct();
-	printinstruct();
+	p.p1 = p1;
+	p.p2 = &p2;
+	size = countitem(*(p.p1));
+	if (!issorted(*(p.p1), size, 1))
+	{
+		if (size <= 3)
+			smallsort(p);
+		else
+			quicksort(p, size, 1, 1);
+		list = getlist();
+		while (del(list))
+			;
+		printinstruct();
+	}
 }
 
 int				main(int argc, char **argv)
@@ -171,9 +79,9 @@ int				main(int argc, char **argv)
 
 	p1 = NULL;
 	str = ft_strmerge(argv + 1, 1, argc - 1);
-	if (argc <= 1 || parse(str, &p1, &verbose) < 1 || verbose)
-		ft_putstr("Error\n");
-	else
+	if (!(parse(str, &p1, &verbose) < 1 || verbose))
 		makeinstruct(&p1);
+	else if (argc > 1)
+		ft_putstr("Error\n");
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/07 00:09:48 by ygaude            #+#    #+#             */
-/*   Updated: 2017/09/24 15:11:33 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/25 21:11:04 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdint.h>
 # include <stdlib.h>
 # include <string.h>
+# include <stdarg.h>
 
 # define BUFF_SIZE 500
 
@@ -97,6 +98,12 @@ char				*ft_strtrim(const char *s);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
 char				*ft_uimaxtoa(uintmax_t n, unsigned int base);
+
 int					get_next_line(const int fd, char **line);
+
+int					ft_printf(const char *format, ...);
+int					ft_dprintf(int fd, const char *format, ...);
+int					ft_asprintf(char **ret, const char *format, ...);
+int					ft_vasprintf(char **ret, const char *format, va_list ap);
 
 #endif

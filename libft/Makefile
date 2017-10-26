@@ -6,7 +6,7 @@
 #    By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/07 02:18:15 by ygaude            #+#    #+#              #
-#    Updated: 2017/09/24 13:34:28 by ygaude           ###   ########.fr        #
+#    Updated: 2017/10/25 20:59:34 by ygaude           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRC = ft_atoi.c ft_bzero.c ft_imaxtoa.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 	  ft_strmap.c ft_strmapi.c ft_strmerge.c ft_strncat.c ft_strncmp.c         \
 	  ft_strncpy.c ft_strnequ.c ft_strnew.c ft_strnstr.c ft_strrchr.c          \
 	  ft_strsplit.c ft_strstr.c ft_strsub.c ft_strtrim.c ft_strtoupper.c       \
-	  ft_tolower.c ft_toupper.c ft_strnlen.c ft_uimaxtoa.c get_next_line.c
+	  ft_tolower.c ft_toupper.c ft_strnlen.c ft_uimaxtoa.c get_next_line.c     \
+	  ft_pr_apply.c ft_pr_convert.c ft_pr_loop.c ft_pr_parse.c ft_printf.c
 
 OBJ = ${SRC:c=o}
 
