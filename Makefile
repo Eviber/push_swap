@@ -6,19 +6,20 @@
 #    By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/20 18:17:31 by ygaude            #+#    #+#              #
-#    Updated: 2017/10/26 05:55:13 by ygaude           ###   ########.fr        #
+#    Updated: 2017/10/26 09:04:24 by ygaude           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CHECKER = checker
 PUSH_SWAP = push_swap
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror `sdl2-config --cflags`
+LFLAGS = `sdl2-config --libs`
 SRC_DIR = src/
 LIBFT_DIR = libft/
 OBJ_DIR = obj/
 
-CHECKER_SRC =	apply.c checker.c parser.c
+CHECKER_SRC =	apply.c checker.c parser.c visu.c
 PS_SRC =	apply.c parser.c push_swap.c list.c quicksort.c smallsort.c tools.c
 
 CHECKER_OBJ = ${CHECKER_SRC:c=o}
@@ -33,14 +34,14 @@ all: $(CHECKER) $(PUSH_SWAP)
 $(CHECKER): $(CHECKER_OBJ)
 	@make -C libft/
 	@echo "Making checker..."
-	@$(CC) $(CFLAGS) $(addprefix $(OBJ_DIR), $(CHECKER_OBJ))                   \
+	@$(CC) $(LFLAGS) $(addprefix $(OBJ_DIR), $(CHECKER_OBJ))                   \
 					 $(LIBFT_DIR)libft.a -I libft/ -I include/ -o $(CHECKER)
 	@echo "Done !"
 
 $(PUSH_SWAP): $(PS_OBJ)
 	@make -C libft/
 	@echo "Making push_swap..."
-	@$(CC) $(CFLAGS) $(addprefix $(OBJ_DIR), $(PS_OBJ)) $(LIBFT_DIR)libft.a    \
+	@$(CC) $(addprefix $(OBJ_DIR), $(PS_OBJ)) $(LIBFT_DIR)libft.a    \
 		-I libft/ -I include/ -o $(PUSH_SWAP)
 	@echo "Done !"
 

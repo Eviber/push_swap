@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/24 16:50:40 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/26 06:00:31 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/26 09:24:21 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,7 @@ int					ksorted(t_pile *pile, int apile);
 int					del(t_todo **list);
 
 void				smallsort(t_piles p);
+
+int					visualize(t_piles p);
 
 #endif
