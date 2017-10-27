@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/26 06:57:16 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/26 10:16:50 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/27 04:39:14 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,30 +71,6 @@ int				init(void)
 	return (0);
 }
 
-/*
-void			loop(t_piles p, SDL_Window *win, SDL_Renderer *render)
-{
-	const Uint8		*keys = SDL_GetKeyboardState(NULL);
-	int				i;
-	unsigned int	count;
-	int				check;
-	char			*str;
-
-	p.dir = 2;
-	while (!SDL_QuitRequested())
-	{
-		handle_key(win, keys, &(p.dir), &(p.mov));
-		move(&(p.dst), &(p.mov));
-		anim(&(p.src), p.dir, keys);
-		ticks = SDL_GetTicks() + (1000 / FPS);
-		SDL_RenderCopy(render, p.tex, &(p.src), &(p.dst));
-		SDL_RenderPresent(render);
-		SDL_RenderClear(render);
-		while (SDL_GetTicks() < ticks);
-	}
-}
-*/
-
 static void		clear(t_winenv *env)
 {
 	SDL_Rect	rect;
@@ -104,27 +80,53 @@ static void		clear(t_winenv *env)
 	rect.x = 0;
 	rect.y = 0;
 	SDL_SetRenderDrawColor(env->render, 150, 150, 200, 0);
-	SDL_RenderDrawRect(env->render, &rect);
+	SDL_RenderFillRect(env->render, &rect);
 	rect.x = WIN_W / 2;
-	rect.y = 0;
-	rect.w = WIN_W / 2;
-	rect.h = WIN_H;
 	SDL_SetRenderDrawColor(env->render, 200, 150, 150, 0);
-	SDL_RenderDrawRect(env->render, &rect);
+	SDL_RenderFillRect(env->render, &rect);
 }
 
-static void		displaystatus(t_winenv *env, t_piles p)
+static void		displaypile(t_winenv *env, t_pile *p, SDL_Rect rect)
 {
-//	SDL_Rect		rect;
-	//t_pile			*cur;
+	t_pile			*cur;
 
+	if (!p)
+		return ;
+	cur = p->last;
+	while (cur && cur != p)
+	{
+		rect.w = 10 * cur->n;
+		if (cur->n < 0)
+			SDL_SetRenderDrawColor(env->render, 255, 255, 255, 0);
+		else
+			SDL_SetRenderDrawColor(env->render, 0, 0, 0, 0);
+		SDL_RenderFillRect(env->render, &rect);
+		cur = cur->last;
+		rect.y -= rect.h;
+	}
+	rect.w = 10 * cur->n;
+	if (cur->n < 0)
+		SDL_SetRenderDrawColor(env->render, 255, 255, 255, 0);
+	else
+		SDL_SetRenderDrawColor(env->render, 0, 0, 0, 0);
+	SDL_RenderFillRect(env->render, &rect);
+}
+
+static void		displaystatus(t_piles p)
+{
+	t_winenv 	*env;
+	SDL_Rect	rect;
+
+	env = getsdlenv();
 	clear(env);
-	if (!p == 200000)
-		;
-	//rect.w = WIN_W / (widest(p) * 2);
+	rect.w = 10;
+	rect.h = 10;
+	rect.y = WIN_H - rect.h;
+	rect.x = WIN_W / 4;
+	displaypile(env, *(p.p1), rect);
+	rect.x = 3 * WIN_W / 4;
+	displaypile(env, *(p.p2), rect);
 	SDL_RenderPresent(env->render);
-//	SDL_SetRenderDrawColor(env->render, 255, 0, 0, 0);
-//	SDL_RenderClear(env->render);
 }
 
 static char		strton(char *str)
@@ -132,25 +134,25 @@ static char		strton(char *str)
 	if (ft_strequ(str, "pa"))
 		return (PA);
 	if (ft_strequ(str, "pb"))
-		return (PA);
+		return (PB);
 	if (ft_strequ(str, "sa"))
-		return (PA);
+		return (SA);
 	if (ft_strequ(str, "sb"))
-		return (PA);
+		return (SB);
 	if (ft_strequ(str, "ss"))
-		return (PA);
+		return (SS);
 	if (ft_strequ(str, "ra"))
-		return (PA);
+		return (RA);
 	if (ft_strequ(str, "rb"))
-		return (PA);
+		return (RB);
 	if (ft_strequ(str, "rr"))
-		return (PA);
+		return (RR);
 	if (ft_strequ(str, "rra"))
-		return (PA);
+		return (RRA);
 	if (ft_strequ(str, "rrb"))
-		return (PA);
+		return (RRB);
 	if (ft_strequ(str, "rrr"))
-		return (PA);
+		return (RRR);
 	return (-1);
 }
 
@@ -184,8 +186,79 @@ static t_order	add(t_order map, char *order)
 			map.next = new;
 		if (new->last)
 			new->last->next = new;
+		map.last = new;
 	}
 	return (map);
+}
+
+/*
+void			loop(t_piles p, SDL_Window *win, SDL_Renderer *render)
+{
+	const Uint8		*keys = SDL_GetKeyboardState(NULL);
+	int				i;
+	unsigned int	count;
+	int				check;
+	char			*str;
+
+	p.dir = 2;
+	while (!SDL_QuitRequested())
+	{
+		handle_key(win, keys, &(p.dir), &(p.mov));
+		move(&(p.dst), &(p.mov));
+		anim(&(p.src), p.dir, keys);
+		ticks = SDL_GetTicks() + (1000 / FPS);
+		SDL_RenderCopy(render, p.tex, &(p.src), &(p.dst));
+		SDL_RenderPresent(render);
+		SDL_RenderClear(render);
+		while (SDL_GetTicks() < ticks);
+	}
+}
+*/
+
+static char		opposite(char order)
+{
+	if (order < 0 || order == SS)
+		return (order);
+	else if (order == RR || order == RRR)
+		return ((order == RR) ? RRR : RR);
+	else if (order <= PB)
+		return ((order == PA) ? PB : PA);
+	else if (order <= SB)
+		return ((order == SA) ? SB : SA);
+	else if (order <= RB)
+		return ((order == RA) ? RB : RA);
+	else
+		return ((order == RRA) ? RRB : RRA);
+}
+
+void			navigate(t_piles p, t_order map)
+{
+	Uint8	*keys;
+	t_order	*cur;
+	int		autoplay;
+	Uint8	spaced;
+
+	autoplay = 0;
+	spaced = 0;
+	cur = map.last;
+	keys = (Uint8 *)SDL_GetKeyboardState(NULL);
+	while (!SDL_QuitRequested())
+	{
+		SDL_PumpEvents();
+		autoplay = (keys[SDL_SCANCODE_SPACE] && !spaced) ? !autoplay : autoplay;
+		if ((keys[SDL_SCANCODE_LEFT] && cur->last) || (cur->next && (keys[SDL_SCANCODE_RIGHT] || autoplay)))
+		{
+			if (keys[SDL_SCANCODE_LEFT] && cur->last)
+				cur = cur->last;
+			else if (cur->next)
+				cur = cur->next;
+			ft_printf("%s", strinstruct((keys[SDL_SCANCODE_LEFT]) ? opposite(cur->order) : cur->order));
+			apply(strinstruct((keys[SDL_SCANCODE_LEFT]) ? opposite(cur->order) : cur->order), p.p1, p.p2);
+			displaystatus(p);
+			SDL_Delay(1000/60);
+		}
+		spaced = keys[SDL_SCANCODE_SPACE];
+	}
 }
 
 int				visualize(t_piles p)
@@ -202,16 +275,17 @@ int				visualize(t_piles p)
 	map.last = NULL;
 	if (init())
 		return (0);
-	displaystatus(getsdlenv(), p);
-	while (check && get_next_line(0, &str) > 0 && ++count)
+	displaystatus(p);
+	while (!SDL_QuitRequested() && check && get_next_line(0, &str) > 0 && ++count)
 	{
 		i = 0;
 		while (ft_isspace(str[i]))
 			i++;
 		check = apply(str + i, p.p1, p.p2);
 		map = add(map, str + i);
-		displaystatus(getsdlenv(), p);
+		displaystatus(p);
 		free(str);
 	}
+	navigate(p, map);
 	return ((!check) ? -1 : (*p.p2 == NULL && issorted(*p.p1)));
 }

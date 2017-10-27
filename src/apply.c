@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/24 15:33:09 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/26 04:14:54 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/27 04:15:54 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int				apply(char *str, t_pile **p1, t_pile **p2)
 			push(p2, p1);
 		else if (*str == 'b')
 			push(p1, p2);
-		return (((*str == 'a' || *str == 'b') && str[1] == '\0'));
+		return (*str == 'a' || *str == 'b');
 	}
 	else if (*str == 'r')
 		return (apply_r(str + 1, p1, p2));
