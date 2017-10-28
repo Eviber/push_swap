@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/26 06:57:16 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/29 00:07:14 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/29 00:10:36 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,17 @@ int				visualize(t_piles p)
 	if (init())
 		return (0);
 	displaystatus(p);
-	while (!SDL_QuitRequested() && check && get_next_line(0, &str) > 0)
+	while (check && get_next_line(0, &str) > 0)
 	{
 		i = 0;
 		while (ft_isspace(str[i]))
 			i++;
 		check = apply(str + i, p.p1, p.p2);
-		displaystatus(p);
-		SDL_Delay(WIN_H / (getsdlenv(NULL)->pop));
+		if (!SDL_QuitRequested())
+		{
+			displaystatus(p);
+			SDL_Delay(WIN_H / (getsdlenv(NULL)->pop));
+		}
 		free(str);
 	}
 	while (!SDL_QuitRequested())
