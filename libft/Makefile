@@ -6,7 +6,7 @@
 #    By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/07 02:18:15 by ygaude            #+#    #+#              #
-#    Updated: 2017/10/25 20:59:34 by ygaude           ###   ########.fr        #
+#    Updated: 2017/10/28 23:52:28 by ygaude           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@ NAME = libft.a
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = ft_atoi.c ft_bzero.c ft_imaxtoa.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
-	  ft_isdigit.c ft_isprint.c ft_isspace.c ft_itoa.c ft_lstadd.c             \
+SRC = ft_abs.c ft_atoi.c ft_bzero.c ft_imaxtoa.c ft_isalnum.c ft_isalpha.c     \
+	  ft_isascii.c ft_isdigit.c ft_isprint.c ft_isspace.c ft_itoa.c ft_lstadd.c\
 	  ft_lstaddend.c ft_lstdel.c ft_lstdelone.c ft_lstend.c ft_lstiter.c       \
 	  ft_lstmap.c ft_lstnew.c ft_magnitude.c ft_memalloc.c ft_memccpy.c        \
 	  ft_memchr.c ft_memcmp.c ft_memcpy.c ft_memdel.c ft_memdup.c ft_memjoin.c \
