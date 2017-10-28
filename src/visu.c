@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/26 06:57:16 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/28 23:52:50 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/29 00:07:14 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,21 @@ static void		clear(t_winenv *env)
 	rect.h = WIN_H;
 	rect.x = 0;
 	rect.y = 0;
-	SDL_SetRenderDrawColor(env->render, 150, 150, 200, 0);
+	SDL_SetRenderDrawColor(env->render, 17, 72, 122, 0);
 	SDL_RenderFillRect(env->render, &rect);
 	rect.x = WIN_W / 2;
-	SDL_SetRenderDrawColor(env->render, 200, 150, 150, 0);
+	SDL_SetRenderDrawColor(env->render, 35, 100, 148, 0);
 	SDL_RenderFillRect(env->render, &rect);
 }
 
 static void		displayunit(SDL_Renderer *render, int n, SDL_Rect rect)
 {
-	if (n < 0)
-		SDL_SetRenderDrawColor(render, 255, 255, 255, 0);
-	else if (n > 0)
-		SDL_SetRenderDrawColor(render, 50, 50, 50, 0);
+	if (n > 0)
+		SDL_SetRenderDrawColor(render, 90, 147, 199, 0);
+	else if (n < 0)
+		SDL_SetRenderDrawColor(render, 175, 204, 225, 0);
 	else
-		SDL_SetRenderDrawColor(render, 0, 0, 0, 0);
+		SDL_SetRenderDrawColor(render, 212, 241, 255, 0);
 	SDL_RenderFillRect(render, &rect);
 }
 
