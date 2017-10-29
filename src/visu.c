@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/26 06:57:16 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/29 00:10:36 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/29 04:53:00 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,13 @@ int				visualize(t_piles p)
 			i++;
 		check = apply(str + i, p.p1, p.p2);
 		if (!SDL_QuitRequested())
-		{
 			displaystatus(p);
+		if (!SDL_QuitRequested())
 			SDL_Delay(WIN_H / (getsdlenv(NULL)->pop));
-		}
 		free(str);
 	}
 	while (!SDL_QuitRequested())
 		;
+	SDL_Quit();
 	return ((!check) ? -1 : (*p.p2 == NULL && issorted(*p.p1)));
 }
