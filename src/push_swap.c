@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 13:11:47 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/26 06:01:38 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/29 19:04:49 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,6 @@ int				main(int argc, char **argv)
 		makeinstruct(&p1);
 	else if (argc > 1)
 		ft_putstr("Error\n");
+	ft_strdel(&str);
 	return (0);
 }
