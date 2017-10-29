@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/20 16:51:26 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/26 09:24:54 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/29 05:33:42 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int				main(int argc, char **argv)
 
 	p.p1 = (t_pile **)malloc(sizeof(t_pile *));
 	p.p2 = (t_pile **)malloc(sizeof(t_pile *));
+	if (!p.p1 || !p.p2)
+		return (0);
 	*(p.p1) = NULL;
 	*(p.p2) = NULL;
 	str = ft_strmerge(argv + 1, 1, argc - 1);

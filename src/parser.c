@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/24 17:15:22 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/25 21:15:11 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/10/29 05:50:02 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 #include "libft.h"
 #include "push_swap.h"
 
-static void		add(t_pile **pile, int n)
+static int		add(t_pile **pile, int n)
 {
 	t_pile	*tmp;
 
 	if (!pile || !(tmp = (t_pile *)malloc(sizeof(t_pile))))
-		return ;
+		return (0);
 	tmp->n = n;
 	if (!*pile)
 	{
@@ -35,6 +35,7 @@ static void		add(t_pile **pile, int n)
 		(*pile)->last->next = tmp;
 		(*pile)->last = tmp;
 	}
+	return (1);
 }
 
 static int		check_n_atoi(char *str, int *n)
@@ -69,7 +70,7 @@ static int		split_atoi(char *str, t_pile **p1, int check)
 		if (ft_strchr("0123456789-+", str[i]) && str[i + 1] != 'v')
 		{
 			check = check && check_n_atoi(str + i, &tmp);
-			add(p1, tmp);
+			check = check && add(p1, tmp);
 			cur = *p1;
 			while (check && cur != (*p1)->last)
 			{
