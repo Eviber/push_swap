@@ -6,7 +6,7 @@
 #    By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/20 18:17:31 by ygaude            #+#    #+#              #
-#    Updated: 2017/10/28 23:56:00 by ygaude           ###   ########.fr        #
+#    Updated: 2017/10/29 05:19:28 by ygaude           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,18 +27,18 @@ PS_OBJ = ${PS_SRC:c=o}
 
 all: $(CHECKER) $(PUSH_SWAP)
 
-%.o: $(SRC_DIR)%.c
+$(addprefix $(OBJ_DIR), %.o): $(SRC_DIR)%.c
 	@mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -I libft/ -I include/ -c -o $(OBJ_DIR)$@ $^
+	@$(CC) $(CFLAGS) -I libft/ -I include/ -c -o $@ $^
 
-$(CHECKER): $(CHECKER_OBJ)
+$(CHECKER): $(addprefix $(OBJ_DIR), $(CHECKER_OBJ))
 	@make -C libft/
 	@echo "Making checker..."
 	@$(CC) $(addprefix $(OBJ_DIR), $(CHECKER_OBJ)) $(LIBFT_DIR)libft.a         \
 								$(LFLAGS) -I libft/ -I include/ -o $(CHECKER)
 	@echo "Done !"
 
-$(PUSH_SWAP): $(PS_OBJ)
+$(PUSH_SWAP): $(addprefix $(OBJ_DIR), $(PS_OBJ))
 	@make -C libft/
 	@echo "Making push_swap..."
 	@$(CC) $(addprefix $(OBJ_DIR), $(PS_OBJ)) $(LIBFT_DIR)libft.a    \
