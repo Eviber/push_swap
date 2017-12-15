@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 13:11:47 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/29 19:04:49 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/12/15 02:19:15 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void		makeinstruct(t_pile **p1)
 		if (size <= 3)
 			smallsort(p);
 		else
-			quicksort(p, size, 1, 1);
+			quicksort(p, size, 1, 2);
 		list = getlist();
 		while (del(list))
 			;

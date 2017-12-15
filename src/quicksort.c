@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/26 05:49:56 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/26 06:08:33 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/12/15 02:28:55 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +99,16 @@ void			quicksort(t_piles p, int until, int apile, int fiter)
 		return ;
 	while (until > 3 && i < (until / 2) + (until % 2 && !apile) && ++reset)
 		i += act(p.p1, p.p2, apile, pivot);
-	while ((!fiter || !apile) && (reset--) - i)
+	while ((!fiter) && (reset--) - i)
 		doinstruct((apile) ? RRA : RRB, p.p1, p.p2);
+	if (i && !apile)
+		quicksort(p, i, !apile, 0);
 	if (until - i <= 3)
 		sort3(p.p1, p.p2, until - i, apile);
 	else
-		quicksort(p, until - i, apile, fiter);
-	if (i)
-		quicksort(p, i, !apile, apile && fiter);
+		quicksort(p, until - i, apile, (fiter == 2) ? fiter - 1 : fiter);
+	if (i && apile)
+		quicksort(p, i, !apile, (fiter == 2) ? 1 : 0);
 	while (i--)
 		doinstruct(apile ? PA : PB, p.p1, p.p2);
 }
