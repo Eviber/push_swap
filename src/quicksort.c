@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/26 05:49:56 by ygaude            #+#    #+#             */
-/*   Updated: 2017/12/15 02:28:55 by ygaude           ###   ########.fr       */
+/*   Updated: 2017/12/17 01:49:23 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,29 +49,18 @@ int				median(t_pile *pile, int size)
 
 void			sort3(t_pile **p1, t_pile **p2, int until, int apile)
 {
-	int		a;
-	int		b;
-	int		c;
-
-	a = (apile) ? (*p1)->n : (*p2)->next->n;
-	b = (apile) ? (*p1)->next->n : (*p2)->n;
-	if (until == 3 && !issorted((apile) ? *p1 : *p2, 3, apile))
+	if (!issorted((apile) ? *p1 : *p2, until, apile))
 	{
-		a = (apile) ? (*p1)->n : (*p2)->next->next->n;
-		b = (apile) ? (*p1)->next->n : (*p2)->next->n;
-		c = (apile) ? (*p1)->next->next->n : (*p2)->n;
-		if ((apile && a < b && b > c) || (!apile && a > b && b < c))
+		if (!issorted((apile) ? *p1 : *p2, 2, apile))
+			doinstruct((apile) ? SA : SB, p1, p2);
+		else
 		{
 			doinstruct((apile) ? RA : RB, p1, p2);
 			doinstruct((apile) ? SA : SB, p1, p2);
 			doinstruct((apile) ? RRA : RRB, p1, p2);
 		}
-		else
-			doinstruct((apile) ? SA : SB, p1, p2);
 		sort3(p1, p2, until, apile);
 	}
-	else if (until == 2 && a > b)
-		doinstruct((apile) ? SA : SB, p1, p2);
 }
 
 int				act(t_pile **p1, t_pile **p2, int apile, int pivot)
