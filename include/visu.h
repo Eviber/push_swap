@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 23:49:29 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/28 23:55:15 by ygaude           ###   ########.fr       */
+/*   Updated: 2018/02/17 09:29:35 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct			s_winenv
 	SDL_Rect			dst;
 	SDL_Rect			src;
 	SDL_Texture			*tex;
+	SDL_Texture			*canvas;
 	SDL_Window			*win;
 	SDL_Renderer		*render;
 	unsigned int		max;

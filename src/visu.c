@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/26 06:57:16 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/29 04:53:00 by ygaude           ###   ########.fr       */
+/*   Updated: 2018/02/19 17:06:23 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ static void		clear(t_winenv *env)
 	SDL_Rect	rect;
 
 	rect.w = WIN_W / 2;
-	rect.h = WIN_H;
+	rect.h = env->pop;
 	rect.x = 0;
 	rect.y = 0;
 	SDL_SetRenderDrawColor(env->render, 17, 72, 122, 0);
 	SDL_RenderFillRect(env->render, &rect);
-	rect.x = WIN_W / 2;
+	rect.x = rect.w;
 	SDL_SetRenderDrawColor(env->render, 35, 100, 148, 0);
 	SDL_RenderFillRect(env->render, &rect);
 }
@@ -50,7 +50,6 @@ static void		displaypile(t_winenv *env, t_pile *p, SDL_Rect rect)
 		return ;
 	orix = rect.x;
 	cur = p->last;
-	rect.h = WIN_H / env->pop;
 	while (cur && cur != p)
 	{
 		rect.y -= rect.h;
@@ -72,14 +71,16 @@ static void		displaystatus(t_piles p)
 	SDL_Rect	rect;
 
 	env = getsdlenv(NULL);
+	SDL_SetRenderTarget(env->render, env->canvas);
 	clear(env);
-	rect.w = 1;
 	rect.h = 1;
-	rect.y = WIN_H - rect.h;
+	rect.y = env->pop;
 	rect.x = WIN_W / 4;
 	displaypile(env, *(p.p1), rect);
-	rect.x = 3 * WIN_W / 4;
+	rect.x += WIN_W / 2;
 	displaypile(env, *(p.p2), rect);
+	SDL_SetRenderTarget(env->render, NULL);
+	SDL_RenderCopy(env->render, env->canvas, NULL, NULL);
 	SDL_RenderPresent(env->render);
 }
 
@@ -107,7 +108,7 @@ int				visualize(t_piles p)
 		free(str);
 	}
 	while (!SDL_QuitRequested())
-		;
+		displaystatus(p);
 	SDL_Quit();
 	return ((!check) ? -1 : (*p.p2 == NULL && issorted(*p.p1)));
 }
