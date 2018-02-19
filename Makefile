@@ -6,23 +6,24 @@
 #    By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/20 18:17:31 by ygaude            #+#    #+#              #
-#    Updated: 2017/10/29 05:19:28 by ygaude           ###   ########.fr        #
+#    Updated: 2018/02/19 23:34:39 by ygaude           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CHECKER = checker
 PUSH_SWAP = push_swap
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror `sdl2-config --cflags`
+CFLAGS = -g -Wall -Wextra -Werror `sdl2-config --cflags`
 LFLAGS = `sdl2-config --libs`
 SRC_DIR = src/
 LIBFT_DIR = libft/
 OBJ_DIR = obj/
 
-CHECKER_SRC =	apply.c checker.c parser.c visu.c visutools.c list.c tools.c
+CHKR_SRC = apply.c checker.c events.c parser.c visu.c visutools.c list.c       \
+		   tools.c display.c
 PS_SRC =	apply.c parser.c push_swap.c list.c quicksort.c smallsort.c tools.c
 
-CHECKER_OBJ = ${CHECKER_SRC:c=o}
+CHECKER_OBJ = ${CHKR_SRC:c=o}
 PS_OBJ = ${PS_SRC:c=o}
 
 all: $(CHECKER) $(PUSH_SWAP)

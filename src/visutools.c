@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 23:48:57 by ygaude            #+#    #+#             */
-/*   Updated: 2018/02/19 17:01:44 by ygaude           ###   ########.fr       */
+/*   Updated: 2018/02/19 23:39:37 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,13 @@ t_winenv		*getsdlenv(t_pile *p)
 
 	if (!winenv)
 		if (p && (winenv = (t_winenv *)malloc(sizeof(t_winenv))))
+		{
 			winenv->max = maxvalue(p, &(winenv->pop)) + 1;
+			winenv->delay = 100;
+			winenv->autoplay = 0;
+			winenv->quit = 0;
+			winenv->ticks = 0;
+		}
 	return (winenv);
 }
 
