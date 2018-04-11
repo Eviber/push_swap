@@ -31,6 +31,14 @@ and to check wether the set of instructions really sorts:
 ARG=`ruby -e "puts (-50..50).to_a.shuffle.join(' ')"` ; ./push_swap $ARG | ./checker -v $ARG
 ```
 
+#### Visualizer
+
+The visualizer have several commands:
+* Right arrow: do one step
+* 0 (numpad): pause autoplay
+* 1-9 (numpad): autoplay (1 is slowest, 9 is fastest)
+* space: BOOSTER (play as fast as possible)
+
 ### Prerequisites
 
 You will need SDL2
