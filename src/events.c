@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 23:17:55 by ygaude            #+#    #+#             */
-/*   Updated: 2018/02/19 23:20:00 by ygaude           ###   ########.fr       */
+/*   Updated: 2018/04/29 20:16:15 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@ static Uint32	getdelay(Uint32 scancode, int *autoplay, Uint32 orig)
 int				events(t_winenv *env)
 {
 	SDL_Event	event;
-	const Uint8	*keys;
 	int			cont;
 
-	keys = SDL_GetKeyboardState(NULL);
 	cont = 0;
 	while (!cont)
 	{
