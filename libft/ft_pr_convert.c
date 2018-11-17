@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_prconvert.c                                     :+:      :+:    :+:   */
+/*   ft_pr_convert.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/05 20:05:45 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/25 21:00:14 by ygaude           ###   ########.fr       */
+/*   Updated: 2018/11/18 00:27:23 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 
 t_str	ft_unic(wchar_t unicstr[], int justonce, int prec, char **str)
 {
-	int		i;
-	t_str	res;
-	wchar_t	c;
+	unsigned int	i;
+	t_str			res;
+	wchar_t			c;
 
 	res.str = ft_strnew(0);
 	while (*unicstr || justonce)
@@ -30,7 +30,7 @@ t_str	ft_unic(wchar_t unicstr[], int justonce, int prec, char **str)
 			ft_strdel(&(res.str));
 			return (res);
 		}
-		if (prec != -1 && i + 1 > prec)
+		if (prec != -1 && (signed) i + 1 > prec)
 			break ;
 		prec -= (prec == -1) ? 0 : i + 1;
 		res.str = ft_strappend(&(res.str), ft_unicconv(str, i, c), 'B');
