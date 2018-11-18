@@ -69,6 +69,7 @@ countwd	libft/ft_strsplit.c	/^static int			countwd(const char *s, char c)$/;"	f	
 del	src/list.c	/^int			del(t_todo **list)$/;"	f
 delay	include/visu.h	/^	Uint32				delay;$/;"	m	struct:s_winenv
 delnext	src/tools.c	/^void		delnext(t_todo *ptr)$/;"	f
+dir	include/visu.h	/^	int					dir;$/;"	m	struct:s_winenv
 disp	src/visu.c	/^void			disp(t_piles p, t_winenv *env)$/;"	f
 displaypile	src/display.c	/^static void		displaypile(t_winenv *env, t_pile *p, SDL_Rect rect)$/;"	f	file:
 displaystatus	src/display.c	/^void			displaystatus(t_piles p)$/;"	f
@@ -180,6 +181,8 @@ getlist	src/tools.c	/^t_todo		**getlist(void)$/;"	f
 getsdlenv	src/visutools.c	/^t_winenv		*getsdlenv(t_pile *p)$/;"	f
 init	src/visutools.c	/^int				init(void)$/;"	f
 initstr	libft/ft_itoa.c	/^static char			*initstr(int n)$/;"	f	file:
+invert	include/push_swap.h	/^	char			invert;$/;"	m	struct:s_todo
+invert	src/tools.c	/^char		invert(char order)$/;"	f
 isblocking	src/tools.c	/^int			isblocking(char order1, char order2)$/;"	f
 isopposed	src/tools.c	/^int			isopposed(char order1, char order2)$/;"	f
 issorted	src/checker.c	/^static int		issorted(t_pile *pile)$/;"	f	file:
@@ -210,6 +213,7 @@ p2	include/push_swap.h	/^	t_pile			**p2;$/;"	m	struct:s_piles
 panic	src/visutools.c	/^static int		panic(char *str, int ret)$/;"	f	file:
 parse	src/parser.c	/^int				parse(char *str, t_pile **p1, int *verbose)$/;"	f
 pop	include/visu.h	/^	int					pop;$/;"	m	struct:s_winenv
+prec	include/push_swap.h	/^	struct s_todo	*prec;$/;"	m	struct:s_todo	typeref:struct:s_todo::s_todo
 printinstruct	src/list.c	/^void		printinstruct(void)$/;"	f
 push	src/apply.c	/^static void		push(t_pile **from, t_pile **to)$/;"	f	file:
 quicksort	src/quicksort.c	/^void			quicksort(t_piles p, int until, int apile, int fiter)$/;"	f
