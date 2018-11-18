@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 23:48:57 by ygaude            #+#    #+#             */
-/*   Updated: 2018/02/19 23:39:37 by ygaude           ###   ########.fr       */
+/*   Updated: 2018/11/18 02:50:42 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ t_winenv		*getsdlenv(t_pile *p)
 			winenv->autoplay = 0;
 			winenv->quit = 0;
 			winenv->ticks = 0;
+			winenv->visuticks = 0;
 		}
 	return (winenv);
 }

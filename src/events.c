@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 23:17:55 by ygaude            #+#    #+#             */
-/*   Updated: 2018/11/18 01:02:11 by ygaude           ###   ########.fr       */
+/*   Updated: 2018/11/18 17:02:47 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,24 +36,21 @@ int				events(t_winenv *env)
 	SDL_Event	event;
 	int			cont;
 
-	cont = env->quit;
-	while (!cont)
+	cont = env->autoplay;
+	while (SDL_PollEvent(&event))
 	{
-		while (SDL_PollEvent(&event))
+		if (event.type == SDL_KEYDOWN)
 		{
-			if (event.type == SDL_KEYDOWN)
-			{
-				env->quit |= event.key.keysym.scancode == SDL_SCANCODE_Q;
-				if (event.key.keysym.scancode == SDL_SCANCODE_KP_0)
-					env->autoplay = 0;
-				if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
-					cont = 1;
-				env->delay = getdelay(event.key.keysym.scancode, &env->autoplay,
-																	env->delay);
-			}
-			env->quit |= event.type == SDL_QUIT;
+			env->quit |= event.key.keysym.scancode == SDL_SCANCODE_Q;
+			if (event.key.keysym.scancode == SDL_SCANCODE_KP_0)
+				env->autoplay = 0;
+			if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
+				cont = 1;
+			env->delay = getdelay(event.key.keysym.scancode, &env->autoplay,
+																env->delay);
 		}
-		cont |= (env->autoplay || env->quit);
+		env->quit |= event.type == SDL_QUIT;
 	}
-	return (!env->quit);
+	cont &= !env->quit;
+	return (cont);
 }
