@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/26 06:57:16 by ygaude            #+#    #+#             */
-/*   Updated: 2018/11/18 17:57:16 by ygaude           ###   ########.fr       */
+/*   Updated: 2018/11/18 18:30:44 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ t_todo			*getinput(void)
 			addorder(&todo, RRR);
 		free(str);
 	}
+	addorder(&todo, -1);
 	return (todo);
 }
 
@@ -111,13 +112,34 @@ int				visualize(t_piles p)
 	{
 		if (events(env))
 		{
-			check = apply(vstrinstruct(todo->order), p.p1, p.p2);
-			todo = todo->next;
+			if (env->dir == 1 && todo->next)
+			{
+				check = apply(vstrinstruct(todo->order), p.p1, p.p2);
+				todo = todo->next;
+			}
+			else if (env->dir == -1 && todo->prec)
+			{
+				todo = todo->prec;
+				check = apply(vstrinstruct(todo->invert), p.p1, p.p2);
+			}
 		}
 		disp(p, env);
 	}
 	while (events(env))
 		displaystatus(p);
 	SDL_Quit();
+
+	t_todo	*tmp;
+	while (todo->next)
+	{
+		check = apply(vstrinstruct(todo->order), p.p1, p.p2);
+		todo = todo->next;
+	}
+	while (todo)
+	{
+		tmp = todo;
+		todo = todo->prec;
+		free(tmp);
+	}
 	return ((!check) ? -1 : (*p.p2 == NULL && issorted(*p.p1)));
 }

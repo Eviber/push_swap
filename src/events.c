@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/19 23:17:55 by ygaude            #+#    #+#             */
-/*   Updated: 2018/11/18 17:02:47 by ygaude           ###   ########.fr       */
+/*   Updated: 2018/11/18 18:20:26 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,16 @@ int				events(t_winenv *env)
 			env->quit |= event.key.keysym.scancode == SDL_SCANCODE_Q;
 			if (event.key.keysym.scancode == SDL_SCANCODE_KP_0)
 				env->autoplay = 0;
-			if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
+			if (event.key.keysym.scancode == SDL_SCANCODE_LEFT)
+			{
 				cont = 1;
+				env->dir = -1;
+			}
+			if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
+			{
+				cont = 1;
+				env->dir = 1;
+			}
 			env->delay = getdelay(event.key.keysym.scancode, &env->autoplay,
 																env->delay);
 		}

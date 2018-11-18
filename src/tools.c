@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/25 22:15:47 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/25 22:31:55 by ygaude           ###   ########.fr       */
+/*   Updated: 2018/11/18 18:16:14 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@ t_todo		**getlist(void)
 	return (&list);
 }
 
+char		invert(char order)
+{
+	int		res;
+
+	res = 0;
+	while (!isopposed(order, res))
+		res++;
+	return (res);
+}
+
 void		addorder(t_todo **todo, char order)
 {
 	t_todo	*new;
@@ -28,7 +38,9 @@ void		addorder(t_todo **todo, char order)
 	if (todo && (new = (t_todo *)malloc(sizeof(t_todo))))
 	{
 		new->next = NULL;
+		new->prec = NULL;
 		new->order = order;
+		new->invert = invert(order);
 		cur = *todo;
 		if (!cur)
 			*todo = new;
@@ -36,6 +48,7 @@ void		addorder(t_todo **todo, char order)
 		{
 			while (cur->next)
 				cur = cur->next;
+			new->prec = cur;
 			cur->next = new;
 		}
 	}

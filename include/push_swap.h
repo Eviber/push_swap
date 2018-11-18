@@ -6,7 +6,7 @@
 /*   By: ygaude <ygaude@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/24 16:50:40 by ygaude            #+#    #+#             */
-/*   Updated: 2017/10/26 09:24:21 by ygaude           ###   ########.fr       */
+/*   Updated: 2018/11/18 18:14:13 by ygaude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ typedef struct		s_pile
 typedef struct		s_todo
 {
 	struct s_todo	*next;
+	struct s_todo	*prec;
 	char			order;
+	char			invert;
 }					t_todo;
 
 typedef struct		s_piles
